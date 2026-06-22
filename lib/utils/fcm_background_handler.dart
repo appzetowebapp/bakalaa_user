@@ -60,52 +60,11 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   debugPrint('📨 Background notification ID: $notificationId');
 
-  // Handle notification payload (when app is in background/terminated)
-  if (notification != null) {
-    // Android notification details using AppConfig
-    final AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-      AppConfig.notificationChannelId, // Must match channel ID
-      AppConfig.notificationChannelName,
-      channelDescription: AppConfig.notificationChannelDescription,
-      importance: Importance.high,
-      priority: Priority.high,
-      playSound: true,
-      enableVibration: true,
-      icon: AppConfig.notificationIcon,
-      showWhen: true,
-      styleInformation: const BigTextStyleInformation(''),
-      color: AppConfig.notificationColor,
-    );
-
-    // iOS notification details
-    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-
-    final NotificationDetails notificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
-
-    // Show notification
-    // Use a hash of the notification ID to generate a consistent integer ID
-    // This prevents duplicate notifications even if the same message is processed multiple times
-    final int localNotificationId = notificationId.hashCode.abs() % 2147483647;
-
-    await notificationsPlugin.show(
-      localNotificationId,
-      notification.title ?? 'Notification',
-      notification.body ?? '',
-      notificationDetails,
-      payload: data.toString(),
-    );
-
-    debugPrint(
-        '✅ Background notification shown: ${notification.title} (ID: $localNotificationId)');
-  } else if (data.isNotEmpty) {
+  // Messages that carry a `notification` payload are displayed automatically
+  // by the OS/FCM SDK in the system tray while the app is backgrounded or
+  // terminated. Showing it again here would produce a duplicate, so we only
+  // need to handle data-only messages manually.
+  if (notification == null && data.isNotEmpty) {
     // Handle data-only messages (messages without notification payload)
     debugPrint('📨 Data-only message received in background');
     final title = data['title']?.toString() ?? 'Notification';
