@@ -6,6 +6,7 @@ import 'package:webview_master_app/utils/prefs_util.dart';
 import 'package:webview_master_app/utils/status_bar_util.dart';
 import 'package:webview_master_app/utils/permission_handler_util.dart';
 import 'package:webview_master_app/utils/notification_service.dart';
+import 'package:webview_master_app/services/update_service.dart';
 
 import 'package:webview_master_app/screens/webview_screen.dart';
 
@@ -31,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     _setupAnimations();
+    UpdateService.checkForUpdate();
     _navigateAfterDelay();
   }
 
@@ -141,7 +143,7 @@ class _SplashScreenState extends State<SplashScreen>
           // 1. Deep Navy Gradient Background
           Container(
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: Color(0xFF01482D),
             ),
           ),
 
@@ -244,23 +246,23 @@ class _SplashScreenState extends State<SplashScreen>
                         // ),
                         Image.asset(
                           AppConfig.appLogoPath,
-                          width: 140,
-                          height: 140,
+                          width: 400,
+                          height: 400,
                           fit: BoxFit.contain,
                         ),
                         const SizedBox(height: 30),
                         // Typography
-                        const Text(
-                          AppConfig.appName,
-                          style: TextStyle(
-                            fontFamily:
-                                'Inter', // Fallback to default if not available
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 4.0, // Increased spacing
-                            color: Colors.white,
-                          ),
-                        ),
+                        // const Text(
+                        //   AppConfig.appName,
+                        //   style: TextStyle(
+                        //     fontFamily:
+                        //         'Inter', // Fallback to default if not available
+                        //     fontSize: 22,
+                        //     fontWeight: FontWeight.bold,
+                        //     letterSpacing: 4.0, // Increased spacing
+                        //     color: Colors.white,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

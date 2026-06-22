@@ -1,4 +1,4 @@
-package com.ziggybites.user
+package com.quick_commerce.frontend
 
 import android.Manifest
 import android.content.pm.PackageManager
